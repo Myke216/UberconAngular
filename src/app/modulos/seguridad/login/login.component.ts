@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import * as cryptoJS from 'crypto-js';
 import { SeguridadService } from 'src/app/servicios/seguridad.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,11 +33,26 @@ identificarUsuario() {
     this.seguridadService.login(usuario, claveCifrada).subscribe(
       (data: any) => {
         this.seguridadService.almacenarSesion(data)
-        this.router.navigate(['/index']);
+        Swal.fire({
+            
+            icon: 'success',
+            title: 'Bienvenido',
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() =>{
+            this.router.navigate(['/index']);
+          })
+
       },
       (error: any) => {
         console.log(error)
-        alert("Datos inválidos");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Datos invalidos',
+          icon: 'error',
+          confirmButtonText: 'Cool'
+        })
+;
       }
       );
     }
